@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+
+<html>
+	<head lang = "en">
+		<meta charset = "utf-8">
+		<meta name = "viewport" content = "width = device-width, initial-scale = 1">
+		<title> jlai9817_Assignment_1_COMP5347 </title>
+		<link rel = "stylesheet" href = "index.css">
+		<script type = "text/javascript" src = "index.js"> </script>
+	</head>
+
+	<body>
+		<form>
+			<div id = "searchBox"> <!--division for the top box-->
+				<!--stuff for search-->
+				<input type = "text" id = "searchText" name = "searchText" /> <!--search bar input-->
+				<input type = "button" id = "searchButton"  name = "searchButton" value = "Search"/> <!--search button-->
+				
+				<!--stuff for category filtering-->
+				<select id = "category"> <!--Drop down list for Category-->
+					<option>Category</option>
+					<option id="empty_category">Extra Category</option>
+				</select>
+				<input type="button" id="filterButton"  name="filterButton" value="Filter"/> <!--category filter button-->
+				
+				<!--stuff for dark mode-->
+				<input type = "checkbox" id = "darkMode" name = "darkMode" value = "Dark mode" class="alignRight">
+				<div class="alignRight">Dark mode</div>
+				
+				<!--stuff for shopping cart-->
+				<span id="cartNumber" class="alignRight">(0)</span> <!--number of items in the cart-->
+				<img alt="Shopping Cart" longdesc="Shopping Cart Image" src="images/shopping_cart.png" height="32" width="32" class = "alignRight"> <!--image of shopping cart-->
+				<input type = "button" id = "resetButton" name = "resetButton" value = "Reset the cart" class = "alignRight"/> <!--Button to reset the cart-->
+				<input type = "button" id = "addButton" name = "addButton" value = "Add to cart" class = "alignRight"/>
+				
+				
+				
+			</div> <!-- end of division for the top box -->
+			
+			<div id = "listBox"><!--division for the book table-->
+				<table><!--table for the book list-->
+					<thead><!--head of the table-->
+						<tr>
+							<th></th>
+							<th></th>
+							<th>Title</th>
+							<th>Rating</th>
+							<th>Authors</th>
+							<th>Year</th>
+							<th>Price</th>
+							<th>Publisher</th>
+							<th>Category</th>
+						</tr>
+					</thead>
+					<tbody><!--body of contents for the table-->
+						<tr id="empty_category"><td colspan="9"></td></tr>
+					</tbody>
+				</table>
+			</div>
+		</form>
+	</body>
+</html>

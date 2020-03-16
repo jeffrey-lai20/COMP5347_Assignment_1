@@ -16,14 +16,10 @@ function getJsonObject(path, success, error) {
 
 window.onload = function() {
 	<!--provided code to read JSON file-->
-	bookList = []; // book list container
+	bookList = []; <!--List of books-->
 	getJsonObject('data.json',
 		function(data) {
-			bookList = data; // store the book list into bookList
-			//console.log(bookList); // print it into console (developer tools)
-			//console.log(bookList[0]); // print the first book object into console 
-			// here you can call methods to laod or refresh the page 
-			// loadBooks() or refreshPage()
+			bookList = data; <!--store the book list into bookList-->
 			
 			const category = document.querySelector("#category");	<!--Gets the HTMLElement Category object-->
 			const tableBody = document.querySelector("#listBox table tbody");		<!--Gets the HTMLElement Table object-->
@@ -41,7 +37,7 @@ window.onload = function() {
 				}
 				
 				let rows = document.createElement("tr");	<!--Elements for the table body, adding in respective content for each row-->
-				rows.innerHTML = "<td><input type=\"checkbox\" id=\"checkbox\"></td>" +	<!--Checkbox-->
+				rows.innerHTML = "<td><input type=\"radio\" name=\"radio\"></td>" +	<!--radio-->
 								"<td><img src=\"" + bookList[i].img +"\" height=\";100\"; width=\"80\"></td>"+	<!--Image-->
 								"<td width = \"30%\">" + bookList[i].title +"</td>";	<!--Title-->
 				
@@ -79,7 +75,7 @@ window.onload = function() {
 		  var darkMode = document.querySelector("#darkMode");
 			  
 
-				//if the checkbox state is changed, run a funtion
+				//if the radio state is changed, run a funtion
 			darkMode.addEventListener("change", function() {
 
 					var element = document.body;
@@ -118,11 +114,17 @@ window.onload = function() {
 											counter++;	<!--Increases counter if found-->
 						console.log("DarkMode boolean "+darkMode.checked);
 						if (!darkMode.checked) {
-							if (input == "") continue;
-							current_row.style.backgroundColor ="cyan";	<!--Changes the corresponding rows to cyan-->     
+							if (input == "") {
+								current_row.style.backgroundColor ="#FFFFFF";	<!--If not found, change it to white-->
+							} else {
+								current_row.style.backgroundColor ="cyan";	<!--Changes the corresponding rows to cyan-->     
+							}
 						} else {
-							if (input == "") continue;
-							current_row.style.backgroundColor ="rgb(0, 0, 102)";
+							if (input == "") {
+								current_row.style.backgroundColor ="#808080";
+							} else {
+								current_row.style.backgroundColor ="rgb(0, 0, 102)";
+							}
 						}
 					 
 					} else {
@@ -174,19 +176,27 @@ window.onload = function() {
 			  var addButton = document.querySelector("#addButton");
 			  var cartNumber = document.querySelector("#cartNumber");
 			  addButton.onclick = ()=>{
-				var counteridk = 0;
-				console.log(rows.length);
-				for (let i=0; i<rows.length; i++){
+				var x = prompt("How many of these would you like?", "0");
+				var num1 = parseInt(x);
+				var itemSelected = false;
+				for (let i = 0; i < rows.length; i++) {
 					let current_row = document.querySelector("#row"+i);	<!--Gets the row's contents-->
-					if(current_row != null){   // allow duplicate items
-						if (current_row.querySelector("#checkbox").checked == true) {
-							console.log("hey we get here" + counteridk++);
-							cart_items.push(rows[i])
+					if (current_row != null) {
+						if (current_row.querySelector('input[name="radio"]').checked) {
+							itemSelected = true;
+							for (let y = 0; y < x; y++) {
+								cart_items.push(rows[i]);
+							} 
 						}
-				  }
+					}
+					
 				}
-				console.log("Length be " + cart_items.length);
-				cartNumber.innerHTML = "("+ cart_items.length + ")";
+				if (!itemSelected) {
+					alert("No items have been selected");
+				}
+				console.log("Hey there are " + x + "items to be added but cart has " + cart_items.length);
+				cartNumber.innerHTML = "("+ cart_items.length +")";
+			
 				uncheck(rows);
 			  }
 
@@ -212,7 +222,7 @@ window.onload = function() {
 		  for (let i=0; i<rows.length; i++){
 				let current_row = document.querySelector("#row"+i);	<!--Gets the row's contents-->
 				if(current_row != null){   // allow duplicate items
-						current_row.querySelector("#checkbox").checked = false;
+						current_row.querySelector('input[name="radio"]').checked = false;
 			  }
 			}
 		}

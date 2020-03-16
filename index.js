@@ -70,32 +70,28 @@ window.onload = function() {
 			newCategory.innerHTML = "Extra";	<!--Sets the contents of the new option to "Test"-->
 			newCategory.setAttribute("value", newCategory.innerHTML);	<!--Sets the value-->
 			category.appendChild(newCategory);}	<!--Adds the new category to the list-->
-			document.querySelector("#empty_category").style.display = "none"; <!--Hides option, change "none" to "inline" to display-->
+			document.querySelector("#empty_category").style.display = "none"; <!--Hides option, change "none" to "" to display-->
 		  
-		  var darkMode = document.querySelector("#darkMode");
+			var darkMode = document.querySelector("#darkMode");
 			  
-
-				//if the radio state is changed, run a funtion
+			<!--DarkMode radio handler-->
 			darkMode.addEventListener("change", function() {
 
 					var element = document.body;
-					element.classList.toggle("darkMode");
+					element.classList.toggle("darkMode");	<!--Toggles darkMode in CSS-->
 					for (let i=0; i < bookList.length; i++){
 						let current_row = document.querySelector("#row"+i);	
 						if (darkMode.checked) {
 							if (current_row.style.backgroundColor == "cyan") {
-								current_row.style.backgroundColor ="rgb(0, 0, 102)";
+								current_row.style.backgroundColor ="rgb(0, 0, 102)";	<!--Changes highlighted cells to dark blue-->
 							} else {
-								current_row.style.backgroundColor ="#808080";
+								current_row.style.backgroundColor ="#808080";	<!--Changes non-highlighted cells to dark gray-->
 							}
 						} else {
-							console.log("unchecked!");
-							console.log(current_row.style.backgroundColor);
 							if (current_row.style.backgroundColor == "rgb(0, 0, 102)") {
-								console.log("hey it's gray so let's make it cyan");
-								current_row.style.backgroundColor ="cyan";	<!--If not found, change it to white-->
+								current_row.style.backgroundColor ="cyan";	<!--Change back from dark blue to cyan-->
 							} else {
-								current_row.style.backgroundColor ="#FFFFFF";
+								current_row.style.backgroundColor ="#FFFFFF";	<!--Change non-highlighted cells to white-->
 							}
 							
 						}
@@ -107,23 +103,23 @@ window.onload = function() {
 			const searchButton = document.querySelector("#searchButton");	<!--Creates the search button object-->
 			searchButton.onclick = () => {	<!--Search button being clicked-->
 				let input = searchText.value;	<!--Stores input from user-->
-				let counter = 0; <!--Counter for results-->
-				for (let i=0; i < bookList.length; i++){	<!--For loop to iterate the search-->
+				let found = false;	<!--Boolean for results-->
+				for (let i = 0; i < bookList.length; i++){	<!--For loop to iterate the search-->
 					let current_row = document.querySelector("#row"+i);	<!--Gets the row's contents-->
 					if (bookList[i].title.toLowerCase().includes(input.trim().toLowerCase())){	<!--Compares the input text and the titles, not case sensitive-->
-											counter++;	<!--Increases counter if found-->
+						found = true;	<!--Changes boolean if found-->
 						console.log("DarkMode boolean "+darkMode.checked);
 						if (!darkMode.checked) {
 							if (input == "") {
-								current_row.style.backgroundColor ="#FFFFFF";	<!--If not found, change it to white-->
+								current_row.style.backgroundColor ="#FFFFFF";	<!--Empty String, change everything back to white-->
 							} else {
-								current_row.style.backgroundColor ="cyan";	<!--Changes the corresponding rows to cyan-->     
+								current_row.style.backgroundColor ="cyan";	<!--If found, change it to cyan-->     
 							}
 						} else {
 							if (input == "") {
-								current_row.style.backgroundColor ="#808080";
+								current_row.style.backgroundColor ="#808080";	<!--Empty String, change everything to dark gray-->
 							} else {
-								current_row.style.backgroundColor ="rgb(0, 0, 102)";
+								current_row.style.backgroundColor ="rgb(0, 0, 102)";	<!--If found, change it to dark blue-->
 							}
 						}
 					 
@@ -131,41 +127,38 @@ window.onload = function() {
 						if (!darkMode.checked) {
 							current_row.style.backgroundColor ="#FFFFFF";	<!--If not found, change it to white-->
 						} else {
-							current_row.style.backgroundColor ="#808080";
+							current_row.style.backgroundColor ="#808080";	<!--If found, change it to dark gray-->
 						}
 					}
 				}
-				if (counter == 0){
+				if (!found){	<!--Alerts if no results found-->
 				  alert("No Results.");
 				}
 			}
 
-			  //filter
+			  <!--Filter button handler-->
 			  var filterButton = document.querySelector("#filterButton");
 			  filterButton.onclick = ()=>{
-				//reset_checked_state(rows)
-				let match = 0; //match counter
-				for (let i=0; i<bookList.length; i++){
-				  let current_row = document.querySelector("#row"+i);
-				  if (category.value=="Category"){//reset filter: display all rows
-					for (let i=0; i<bookList.length; i++){
-					  document.querySelector("#row"+i).style.display = "";
+				let match = 0; <!--Counter for matches-->
+				for (let i = 0; i < bookList.length; i++){
+				  let current_row = document.querySelector("#row"+i);	<!--Iterate through each row-->
+				  if (category.value == "Category") {	<!--If set to "Category" display all rows-->
+					for (let j = 0; j < bookList.length; j++){
+					  document.querySelector("#row"+j).style.display = "";	<!--Displays the matching rows-->
 					}
 					break;
 				  }
-				  if (category.value==bookList[i].category){
+				  if (category.value == bookList[i].category) {	<!--Display matching categories-->
 					current_row.style.display = "";
 					match += 1;
-				  }else{
-					current_row.style.display = "none" //hide rows
+				  } else {
+					current_row.style.display = "none" <!--Don't display non-matching categories-->
 				  }
 				}
 			 
 				if (match == 0 && category.value != "Category"){// if empty category
-
 					document.querySelector("#empty_category").style.display = "";
-						   console.log(document.querySelector("#empty_category"))
-				}else {
+				} else {
 					document.querySelector("#empty_category").style.display = "none";
 				}
 				uncheck(rows);

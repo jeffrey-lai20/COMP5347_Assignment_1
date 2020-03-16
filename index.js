@@ -64,35 +64,34 @@ window.onload = function() {
 			}
 
 			/*Extra category that isn't in the bookstore*/
-			{let newCategory = document.querySelector("#empty_category");
+			let newCategory = document.querySelector("#empty_category");
 			newCategory.innerHTML = "Extra";	/*Sets the contents of the new option to "Extra"*/
 			newCategory.setAttribute("value", newCategory.innerHTML);	/*Sets value*/
-			category.appendChild(newCategory);}
+			category.appendChild(newCategory);
 			document.querySelector("#empty_category").style.display = "none"; /*Hides option, change "none" to "" to display*/
 		  			  
 			/*DarkMode radio handler*/
 			var darkMode = document.querySelector("#darkMode");
 			darkMode.addEventListener("change", function() {
-
-					var element = document.body;
-					element.classList.toggle("darkMode");	/*Toggles darkMode in CSS*/
-					for (let i=0; i < bookList.length; i++){
-						let current_row = document.querySelector("#row"+i);	
-						if (darkMode.checked) {
-							if (current_row.style.backgroundColor == "cyan") {
-								current_row.style.backgroundColor ="rgb(0, 0, 102)";	/*Changes highlighted cells to dark blue*/
-							} else {
-								current_row.style.backgroundColor ="#808080";	/*Changes non-highlighted cells to dark gray*/
-							}
+				var element = document.body;
+				element.classList.toggle("darkMode");	/*Toggles darkMode in CSS*/
+				for (let i=0; i < bookList.length; i++){
+					let current_row = document.querySelector("#row"+i);	
+					if (darkMode.checked) {
+						if (current_row.style.backgroundColor == "cyan") {
+							current_row.style.backgroundColor ="rgb(0, 0, 102)";	/*Changes highlighted cells to dark blue*/
 						} else {
-							if (current_row.style.backgroundColor == "rgb(0, 0, 102)") {
-								current_row.style.backgroundColor ="cyan";	/*Change back from dark blue to cyan*/
-							} else {
-								current_row.style.backgroundColor ="#FFFFFF";	/*Change non-highlighted cells to white*/
-							}
-							
+							current_row.style.backgroundColor ="#808080";	/*Changes non-highlighted cells to dark gray*/
 						}
-					}			
+					} else {
+						if (current_row.style.backgroundColor == "rgb(0, 0, 102)") {
+							current_row.style.backgroundColor ="cyan";	/*Change back from dark blue to cyan*/
+						} else {
+							current_row.style.backgroundColor ="#FFFFFF";	/*Change non-highlighted cells to white*/
+						}
+						
+					}
+				}			
 			});
 			
 			/*Search feature*/
@@ -134,12 +133,12 @@ window.onload = function() {
 
 			  /*Filter button handler*/
 			  var filterButton = document.querySelector("#filterButton");
-			  filterButton.onclick = ()=>{
+			  filterButton.onclick = () => {
 				let match = 0; /*Counter for matches*/
-				for (let i = 0; i < bookList.length; i++){
+				for (let i = 0; i < bookList.length; i++) {
 				  let current_row = document.querySelector("#row"+i);	/*Iterate through each row*/
 				  if (category.value == "Category") {	/*If set to "Category" display all rows*/
-					for (let j = 0; j < bookList.length; j++){
+					for (let j = 0; j < bookList.length; j++) {
 					  document.querySelector("#row"+j).style.display = "";	/*Displays the matching rows*/
 					}
 					break;
@@ -157,25 +156,25 @@ window.onload = function() {
 				} else {
 					document.querySelector("#empty_category").style.display = "none";	/*Hide the blank table*/
 				}
-				uncheck(rows);	/*Uncheck all rows*/
+				uncheck(rows);
 			  }
 
 			  /*Add to cart handler*/
 			  var cart_items = [];  //items in cart
 			  var addButton = document.querySelector("#addButton");
 			  var cartNumber = document.querySelector("#cartNumber");
-			  addButton.onclick = ()=>{
+			  addButton.onclick = () =>{
 				var quantityInput = prompt("How many of these would you like?", "0");	/*Asks user quantity*/
-				var num1 = parseInt(quantityInput);	/*Quantity input*/
-				if (num1 > 0) {
+				var quantityNum = parseInt(quantityInput);	/*Quantity input, max 100 000 000*/
+				if (quantityNum > 0 && quantityNum <= 100000000) {
 					var itemSelected = false;	/*Check for valid radio checking*/
 					for (let i = 0; i < rows.length; i++) {
 						let current_row = document.querySelector("#row"+i);	/*Gets the row's contents*/
 						if (current_row != null) {
 							if (current_row.querySelector('input[name="radio"]').checked) {
 								itemSelected = true;	/*A valid selection has been made*/
-								for (let y = 0; y < quantityInput; y++) {
-									cart_items.push(rows[i]);	/*Adds items into cart, looping quantity input times*/
+								for (let y = 0; y < quantityNum; y++) {
+									cart_items.push(rows[i]);	/*Adds items into cart, looping quantityNum times*/
 								} 
 							}
 						}
@@ -183,10 +182,14 @@ window.onload = function() {
 					if (!itemSelected) {
 						alert("No items have been selected");
 					}
-					cartNumber.innerHTML = "("+ cart_items.length +")";	/*Changes the cart number*/
-					uncheck(rows);	/*Resets radio check*/
+					cartNumber.innerHTML = "("+ cart_items.length +")";
+					uncheck(rows);
 				} else {
-					alert("Invalid input.");
+					if (quantityNum >= 100000000) {
+						alert("Quantity input is too high.");
+					} else {
+						alert("Invalid input.");
+					}
 				}				
 			  }
 
@@ -194,7 +197,7 @@ window.onload = function() {
 			  var resetButton = document.querySelector("#resetButton");
 			  uncheck(rows);	/*Unchecks all radios*/
 			  resetButton.onclick = () => {
-				if (confirm("Are you sure you want to reset your cart?")){
+				if (confirm("Are you sure you want to reset your cart?")) {
 				  cart_items = [];	/*Empty cart*/
 				  cartNumber.innerHTML = "("+ cart_items.length + ")";	/*Update cart item number*/
 				  alert("Cart has been reset.");

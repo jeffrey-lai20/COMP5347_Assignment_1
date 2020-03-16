@@ -66,6 +66,7 @@ caption {
 .darkMode, .darkMode thead {
 	background-color: #A9A9A9;
 }
+
 .darkMode div#listBox, .darkMode div#searchBox {
 	background-color: #808080;
 	color: white;
